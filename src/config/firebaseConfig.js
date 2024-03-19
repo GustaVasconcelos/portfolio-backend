@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const firebasePrivateKey = process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n');
+const firebasePrivateKey = process.env.FIREBASE_PRIVATE_KEY;
 
 admin.initializeApp({
     credential: admin.credential.cert({
