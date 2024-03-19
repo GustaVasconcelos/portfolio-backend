@@ -1,13 +1,17 @@
 class TechnologyController {
-    constructor(technologyService) {
+    constructor(technologyService, firebaseStorageService) {
         this.technologyService = technologyService;
+        this.firebaseStorageService = firebaseStorageService;
     }
 
     createTechnology = async (req, res) => {
         try {
             const technologyDetails = req.body;
 
-            technologyDetails.image = req.file.filename;
+            if (req.file) {
+                technologyDetails.image = await this.firebaseStorageService.uploadFile(req.file);
+            }
+
             technologyDetails.userId = req.userId;
 
             const technology = await this.technologyService.createTechnology(technologyDetails);
@@ -25,6 +29,7 @@ class TechnologyController {
     getTechnologies = async (req, res) => {
         try {
             const technologies = await this.technologyService.getAllTechnologies();
+
             res.status(200).json(technologies);
         } catch (error) {
             res.status(500).json({ error: 'Erro interno do servidor' });
@@ -34,11 +39,15 @@ class TechnologyController {
     getTechnology = async (req, res) => {
         try {
             const technologyId = req.params.id;
+
             const technology = await this.technologyService.getTechnologyById(technologyId);
+
             if (!technology) {
                 res.status(404).json({ message: 'Tecnologia não encontrada' });
+
                 return;
             }
+
             res.status(200).json(technology);
         } catch (error) {
             if (error instanceof Error) {
@@ -54,7 +63,9 @@ class TechnologyController {
             const technologyId = req.params.id;
             const updatedTechnologyData = req.body;
 
-            updatedTechnologyData.image = req.file.filename;
+            if (req.file) {
+                updatedTechnologyData.image = await this.firebaseStorageService.uploadFile(req.file);
+            }
 
             const updatedTechnology = await this.technologyService.updateTechnology(technologyId, updatedTechnologyData);
             res.status(200).json(updatedTechnology);
@@ -70,7 +81,9 @@ class TechnologyController {
     deleteTechnology = async (req, res) => {
         try {
             const technologyId = req.params.id;
+
             await this.technologyService.deleteTechnology(technologyId);
+
             res.status(204).end();
         } catch (error) {
             if (error instanceof Error) {
@@ -83,8 +96,10 @@ class TechnologyController {
 
     getTechnologiesByUser = async (req, res) => {
         try {
-            const userId = req.userId; // Assumindo que este é um campo injetado por um middleware de autenticação anterior
+            const userId = req.userId;
+
             const technologies = await this.technologyService.findTechnologiesByUserId(userId);
+
             res.status(200).json(technologies);
         } catch (error) {
             if (error instanceof Error) {

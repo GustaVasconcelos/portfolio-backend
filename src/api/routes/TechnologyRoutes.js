@@ -5,13 +5,14 @@ import TechnologyRepository from '../../repositories/TechnologyRepository.js';
 import authenticateToken from '../middleware/authenticateTokenMiddleware.js';
 import storage from '../../config/multer.js';
 import multer from 'multer';
-
+import FirebaseStorageService from '../../services/FirebaseStorageService.js'
 const upload = multer({ storage })
 const router = express.Router();
 
+const firebaseStorageService = new FirebaseStorageService();
 const technologyRepository = new TechnologyRepository();
 const technologyService = new TechnologyService(technologyRepository);
-const technologyController = new TechnologyController(technologyService);
+const technologyController = new TechnologyController(technologyService, firebaseStorageService);
 
 router.get('/user', authenticateToken, technologyController.getTechnologiesByUser);
 router.get('/', authenticateToken, technologyController.getTechnologies);
