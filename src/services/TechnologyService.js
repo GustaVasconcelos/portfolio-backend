@@ -7,16 +7,13 @@ class TechnologyService {
 
     async createTechnology(technologyDetails) {
         try {
-            return technologyDetails.file
-            // this.validations.validateFields([technologyDetails.name, technologyDetails.image]);
-    
-            // // technologyDetails.image = await this.imageUtils.saveImage(technologyDetails.image); 
-            
-            // const createdTechnologyData = await this.technologyRepository.create(technologyDetails);
+            this.validations.validateFields([technologyDetails.name, technologyDetails.image]);
+                
+            const createdTechnologyData = await this.technologyRepository.create(technologyDetails);
 
-            // const createdTechnology = createdTechnologyData.toObject();
+            const createdTechnology = createdTechnologyData.toObject();
     
-            // return createdTechnology;
+            return createdTechnology;
         } catch (error) {
             if (error instanceof ValidationError) {
                 throw new Error(error.message);
@@ -36,10 +33,6 @@ class TechnologyService {
     async updateTechnology(id, updatedTechnologyData) {
         try {
             this.validations.validateFields(Object.values(updatedTechnologyData).filter(value => value !== undefined));
-    
-            if (updatedTechnologyData.image) {
-                // updatedTechnologyData.image = await this.imageUtils.saveImage(updatedTechnologyData.image);
-            }
     
             const updatedTechnology = await this.technologyRepository.update(id, updatedTechnologyData);
             

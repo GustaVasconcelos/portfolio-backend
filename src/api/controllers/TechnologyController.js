@@ -6,7 +6,12 @@ class TechnologyController {
     createTechnology = async (req, res) => {
         try {
             const technologyDetails = req.body;
+
+            technologyDetails.image = req.file.filename;
+            technologyDetails.userId = req.userId;
+
             const technology = await this.technologyService.createTechnology(technologyDetails);
+
             res.status(201).json(technology);
         } catch (error) {
             if (error instanceof Error) {
@@ -48,6 +53,9 @@ class TechnologyController {
         try {
             const technologyId = req.params.id;
             const updatedTechnologyData = req.body;
+
+            updatedTechnologyData.image = req.file.filename;
+
             const updatedTechnology = await this.technologyService.updateTechnology(technologyId, updatedTechnologyData);
             res.status(200).json(updatedTechnology);
         } catch (error) {

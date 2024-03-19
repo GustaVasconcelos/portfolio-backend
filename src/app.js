@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(bodyParser.json());
+app.use('/files', express.static('./src/uploads'));
 app.use('/users', UserRouter); 
 app.use('/technologies', TechnologyRouter); 
 
