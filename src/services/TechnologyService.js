@@ -3,7 +3,8 @@ import { Validations, ValidationError } from '../utils/Validations.js';
 class TechnologyService {
     constructor(technologyRepository) {
         this.technologyRepository = technologyRepository;
-        this.validations = Validations;    }
+        this.validations = Validations;    
+    }
 
     async createTechnology(technologyDetails) {
         try {

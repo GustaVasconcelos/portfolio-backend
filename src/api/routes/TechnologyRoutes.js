@@ -6,6 +6,7 @@ import authenticateToken from '../middleware/authenticateTokenMiddleware.js';
 import storage from '../../config/multer.js';
 import multer from 'multer';
 import FirebaseStorageService from '../../services/FirebaseStorageService.js'
+
 const upload = multer({ storage })
 const router = express.Router();
 
