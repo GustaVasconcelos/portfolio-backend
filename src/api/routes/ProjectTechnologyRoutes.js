@@ -2,7 +2,7 @@ import express from 'express';
 import ProjectTechnologyController from '../controllers/ProjectTechnologyController.js'; 
 import ProjectTechnologyRepository from '../../repositories/ProjectTechnologyRepository.js';
 import authenticateToken from '../middleware/authenticateTokenMiddleware.js';
-import ProjectTechnologyService from '../../services/projectTechnologyService.js';
+import ProjectTechnologyService from '../../services/ProjectTechnologyService.js';
 
 const router = express.Router();
 
